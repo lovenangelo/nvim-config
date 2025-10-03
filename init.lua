@@ -911,7 +911,7 @@ require('lazy').setup({
       require('tokyonight').setup {
         transparent = true,
         styles = {
-          comments = { italic = false }, -- Disable italics in comments
+          comments = { italic = true }, -- Disable italics in comments
         },
       }
 
@@ -1041,6 +1041,43 @@ vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
 vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+-- Optimized transparent background setup
+local function set_transparent_bg()
+  local highlights = {
+    'Normal',
+    'NormalNC',
+    'NormalFloat',
+    'CursorLine',
+    'LineNr',
+    'CursorLineNr',
+    'SignColumn',
+    'VertSplit',
+    'WinSeparator',
+    'EndOfBuffer',
+    'StatusLine',
+    'StatusLineNC',
+  }
 
-vim.keymap.set('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
-vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>a', { noremap = true, silent = true })
+  for _, group in ipairs(highlights) do
+    vim.api.nvim_set_hl(0, group, { bg = 'NONE', ctermbg = 'NONE' })
+  end
+
+  -- Git signs with colors
+  vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = '#3cb371', bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = '#ffa500', bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsDelete', { fg = '#ff6b6b', bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsChangedelete', { fg = '#ff6b6b', bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsTopdelete', { fg = '#ff6b6b', bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsUntracked', { fg = '#4682b4', bg = 'NONE' })
+
+  -- Line number colors
+  vim.api.nvim_set_hl(0, 'LineNrAbove', { fg = '#51B3EC', bold = true })
+  vim.api.nvim_set_hl(0, 'LineNr', { fg = 'white', bold = true })
+  vim.api.nvim_set_hl(0, 'LineNrBelow', { fg = '#FB508F', bold = true })
+end
+
+-- Apply on colorscheme change and startup (removed BufWinEnter for performance)
+vim.api.nvim_create_autocmd({ 'ColorScheme', 'VimEnter' }, {
+  pattern = '*',
+  callback = set_transparent_bg,
+})
