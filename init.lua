@@ -1036,9 +1036,6 @@ require('lazy').setup({
   },
 })
 
-vim.api.nvim_set_hl(0, 'SnacksNormal', { bg = 'none', fg = '#ffffff' })
-vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- Optimized transparent background setup
@@ -1057,11 +1054,6 @@ local function set_transparent_bg()
     'StatusLine',
     'StatusLineNC',
   }
-
-  for _, group in ipairs(highlights) do
-    vim.api.nvim_set_hl(0, group, { bg = 'NONE', ctermbg = 'NONE' })
-  end
-
   -- Git signs with colors
   vim.api.nvim_set_hl(0, 'GitSignsAdd', { fg = '#3cb371', bg = 'NONE' })
   vim.api.nvim_set_hl(0, 'GitSignsChange', { fg = '#ffa500', bg = 'NONE' })
@@ -1075,9 +1067,3 @@ local function set_transparent_bg()
   vim.api.nvim_set_hl(0, 'LineNr', { fg = 'white', bold = true })
   vim.api.nvim_set_hl(0, 'LineNrBelow', { fg = '#FB508F', bold = true })
 end
-
--- Apply on colorscheme change and startup (removed BufWinEnter for performance)
-vim.api.nvim_create_autocmd({ 'ColorScheme', 'VimEnter' }, {
-  pattern = '*',
-  callback = set_transparent_bg,
-})
