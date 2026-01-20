@@ -1067,3 +1067,13 @@ require('claude-code').setup {
 }
 
 vim.keymap.set('n', '<leader>cc', '<cmd>ClaudeCode<CR>', { desc = 'Toggle Claude Code' })
+
+vim.lsp.config('rust_analyzer', {
+  settings = {
+    ['rust-analyzer'] = {
+      cargo = {
+        features = 'all', -- Enable all features
+      },
+    },
+  },
+})
