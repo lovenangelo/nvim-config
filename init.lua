@@ -784,13 +784,13 @@ require('lazy').setup({
         dependencies = {
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
-          --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          -- https://github.com/rafamadriz/friendly-snippets
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -806,6 +806,9 @@ require('lazy').setup({
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+
+      require 'snippets.leptos.nvim-leptos-snippets'
+
       luasnip.config.setup {}
 
       cmp.setup {
@@ -1077,3 +1080,17 @@ vim.lsp.config('rust_analyzer', {
     },
   },
 })
+
+vim.keymap.set({ 'i', 's' }, '<Tab>', function()
+  if require('luasnip').jumpable(1) then
+    require('luasnip').jump(1)
+  else
+    return '<Tab>'
+  end
+end, { expr = true, silent = true })
+
+vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
+  if require('luasnip').jumpable(-1) then
+    require('luasnip').jump(-1)
+  end
+end, { silent = true })
